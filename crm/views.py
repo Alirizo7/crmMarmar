@@ -2,16 +2,32 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-from .forms import ClientForm, OrderForm, ServiceForm, EditOrderForm, OrderFieldForm
+from .forms import *
 from .models import Clients, Orders, Service, Department, ProjectService, OrderField
 
 
+def login_user(request):
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+            return redirect('home')
+    return render(request, 'sign_in.html', {'form': form})
+
+
+@login_required(login_url='/login_user')
 def index(request):
     return render(request, 'index.html', {})
 
 
+@login_required(login_url='/login_user')
 def clients(request):
     clients = Clients.objects.all()
     form = ClientForm(request.POST)
@@ -139,19 +155,6 @@ def department(request, pk):
                    'max_percent_sum': 0 if result_parcent == 0 else int((sum_percent / result_parcent) * 100),
                    'result': reuslt_sum * max_percent_sum / 100
                    })
-
-
-def login_user(request):
-    form = AuthenticationForm()
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            if 'next' in request.POST:
-                return redirect(request.POST.get('next'))
-            return redirect('home')
-    return render(request, 'sign_in.html', {'form': form})
 
 
 def sign_out(request):

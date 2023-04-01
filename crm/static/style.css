@@ -174,7 +174,7 @@ ul, li {
     justify-content: space-between;
 }
 
-.clients_header_titel{
+.clients_header_titel {
     display: flex;
 }
 
@@ -531,7 +531,7 @@ ul, li {
     margin: 10px 10px 10px 80%;
 }
 
-.errorlist li{
+.errorlist li {
     display: none;
 }
 
