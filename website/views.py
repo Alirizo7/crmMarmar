@@ -6,4 +6,5 @@ from .models import *
 
 def Home(request):
     slider = SliderHero.objects.all()
-    return render(request, 'home.html', {'slider': slider})
+    project = Projects.objects.all()
+    return render(request, 'home.html', {'slider': slider, 'project': project})

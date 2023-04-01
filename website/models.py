@@ -8,3 +8,11 @@ class SliderHero(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Projects(models.Model):
+    name = models.CharField(max_length=255)
+    img = models.ImageField(upload_to='uploads/')
+
+    def __str__(self):
+        return self.name
