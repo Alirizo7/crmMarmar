@@ -1,15 +1,19 @@
 from django import forms
-
+from django.contrib.auth.forms import AuthenticationForm
 from .models import Clients, Orders, Service, User, OrderField
 
 
-class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        'class': "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-[#EF4D23] transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+    }))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-[#EF4D23] transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+    }))
 
     class Meta:
         model = User
-        fields = 'username'
+        fields = ('username', 'password')
 
 
 class ClientForm(forms.ModelForm):
@@ -61,6 +65,7 @@ class EditOrderForm(forms.ModelForm):
 class OrderFieldForm(forms.ModelForm):
     title = forms.CharField(label='Hujjat nomi')
     field = forms.FileField(label='Hujjat')
+
     class Meta:
         model = OrderField
         fields = ('title', 'field')
